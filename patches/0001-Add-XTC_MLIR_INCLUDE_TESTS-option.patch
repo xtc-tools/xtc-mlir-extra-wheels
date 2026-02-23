@@ -1,0 +1,35 @@
+From d1899a5a3f3245b98c0010ad745e839425c249f5 Mon Sep 17 00:00:00 2001
+From: Christophe Guillon <christophe.guillon@inria.fr>
+Date: Mon, 23 Feb 2026 18:26:19 +0100
+Subject: [PATCH] Add XTC_MLIR_INCLUDE_TESTS option
+
+---
+ CMakeLists.txt | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5ff9fec..047ab74 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -16,6 +16,8 @@ set(LLVM_RUNTIME_OUTPUT_INTDIR ${CMAKE_BINARY_DIR}/bin)
+ set(LLVM_LIBRARY_OUTPUT_INTDIR ${CMAKE_BINARY_DIR}/lib)
+ set(MLIR_BINARY_DIR ${CMAKE_BINARY_DIR})
+ 
++option(XTC_MLIR_INCLUDE_TESTS "Build test targets" ON)
++
+ list(APPEND CMAKE_MODULE_PATH "${MLIR_CMAKE_DIR}")
+ list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
+ include(TableGen)
+@@ -41,6 +43,8 @@ add_subdirectory(lib)
+ #  message(STATUS "Enabling Python API")
+ #  add_subdirectory(python)
+ #endif()
+-add_subdirectory(test)
++if (XTC_MLIR_INCLUDE_TESTS)
++  add_subdirectory(test)
++endif()
+ add_subdirectory(tools)
+ add_subdirectory(runtime)
+-- 
+2.52.0
+
