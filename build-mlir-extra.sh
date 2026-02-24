@@ -39,5 +39,8 @@ cmake \
     -G Ninja \
     ..
 
+ninja
+ninja install
+
 mkdir -p "$INSTALL_DEV_DIR"
 mv "$INSTALL_DIR"/lib "$INSTALL_DEV_DIR"/
