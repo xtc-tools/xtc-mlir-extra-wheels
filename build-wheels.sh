@@ -29,9 +29,9 @@ CIBW_BEFORE_TEST="./install-llvm.sh"
 CIBW_REPAIR_WHEEL_COMMAND_LINUX="auditwheel repair --exclude 'libLLVM.so' -w {dest_dir} {wheel}"
 CIBW_REPAIR_WHEEL_COMMAND_MACOS="pip install wheel && python mac-os-wheels-fixer.py --original {wheel} --output {dest_dir}"
 if [ "$BUILD_PACKAGE" = "mlir-extra-dev" ]; then
-    # No binary to repair
-    CIBW_REPAIR_WHEEL_COMMAND_LINUX="cp {wheel} {dest_dir}/"
-    CIBW_REPAIR_WHEEL_COMMAND_MACOS="cp {wheel} {dest_dir}/"
+    # No binary to repair, trick wheel name for right platform version anyway
+    CIBW_REPAIR_WHEEL_COMMAND_LINUX='cp {wheel} {dest_dir}/`basename {wheel} -linux_x86_64.whl`-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl'
+    CIBW_REPAIR_WHEEL_COMMAND_MACOS='cp {wheel} {dest_dir}/'
 fi
 
 MACOSX_DEPLOYMENT_ARGS=""
