@@ -41,9 +41,9 @@ jobs:
           path: ~/ccache
           key: ${{ runner.os }}-ccache-${{ github.run_id }}
           restore-keys: ${{ runner.os }}-ccache
-      - name: Checkout LLVM
+      - name: Checkout XTC MLIR
         run: |
-          ./checkout-llvm.sh
+          ./checkout-xtc-mlir.sh
       - name: Install macOS Brew Packages
         if: runner.os == 'macOS'
         run: |
