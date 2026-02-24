@@ -85,6 +85,6 @@ ENV_VARS=(
 [ -z "$MACOSX_DEPLOYMENT_ARGS" ] || ENV_VARS+=("$MACOSX_DEPLOYMENT_ARGS")
 
 env "${ENV_VARS[@]}" \
-     cibuildwheel \
+     ${CIBUILDWHEEL-cibuildwheel} \
      "$BUILD_PACKAGE"
 
