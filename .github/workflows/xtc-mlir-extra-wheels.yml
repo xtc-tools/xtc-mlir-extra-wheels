@@ -41,6 +41,9 @@ jobs:
           path: ~/ccache
           key: ${{ runner.os }}-ccache-${{ github.run_id }}
           restore-keys: ${{ runner.os }}-ccache
+      - name: Setup Gitlab Access
+        run: |
+          echo "machine gitlab.inria.fr login __token__ password ${{ secrets.GITLAB_READ_TOKEN }}" >$HOME/.netrc
       - name: Checkout XTC MLIR
         run: |
           ./checkout-xtc-mlir.sh
