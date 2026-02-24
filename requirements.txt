@@ -1,0 +1,2 @@
+cibuildwheel==3.2.0
+twine==6.2.0
