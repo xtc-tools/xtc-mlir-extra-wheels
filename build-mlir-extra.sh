@@ -16,6 +16,7 @@ CCACHE_OPTS=""
 
 LLVM_BUILD_TYPE=Release
 
+PYTHON_EXECUTABLE=$(python -c 'import sys; print(sys.executable)')
 MLIR_PREFIX=$(python -c 'import mlir; print(mlir.__path__[0])')
 LLVM_PREFIX=$(python -c 'import llvm; print(llvm.__path__[0])')
 
@@ -24,6 +25,8 @@ mkdir -p "$BUILD_DIR"
 cd "$BUILD_DIR"
 
 cmake \
+    -DPython3_EXECUTABLE="$PYTHON_EXECUTABLE" \
+    -DPython_EXECUTABLE="$PYTHON_EXECUTABLE" \
     -DLLVM_DIR="$LLVM_PREFIX"/lib/cmake/llvm \
     -DMLIR_DIR="$MLIR_PREFIX"/lib/cmake/mlir \
     -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" \
