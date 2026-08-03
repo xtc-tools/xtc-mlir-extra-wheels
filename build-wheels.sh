@@ -27,7 +27,7 @@ CIBW_BEFORE_ALL="./install-build-tools.sh"
 CIBW_BEFORE_BUILD="./install-llvm.sh && ./install-mlir.sh && ./build-mlir-extra.sh"
 CIBW_BEFORE_TEST="./install-llvm.sh"
 
-CIBW_REPAIR_WHEEL_COMMAND_LINUX="auditwheel repair --exclude 'libLLVM.so' -w {dest_dir} {wheel}"
+CIBW_REPAIR_WHEEL_COMMAND_LINUX="auditwheel repair --exclude 'libLLVM.so' --exclude 'libMLIRPythonCAPI.so' -w {dest_dir} {wheel}"
 CIBW_REPAIR_WHEEL_COMMAND_MACOS="pip install wheel && python mac-os-wheels-fixer.py --original {wheel} --output {dest_dir}"
 if [ "$BUILD_PACKAGE" = "mlir-extra-dev" ]; then
     # No binary to repair, trick wheel name for right platform version anyway
