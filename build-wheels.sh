@@ -7,11 +7,12 @@ cd "$dir"
 
 BUILD_PLATFORM="${BUILD_PLATFORM:-$(uname -s | tr '[:upper:]' '[:lower:]')}"
 BUILD_PACKAGE="${BUILD_PACKAGE:-mlir-extra-tools}"
+BUILD_FOR_PYTHON="${BUILD_FOR_PYTHON:-cp310}"
 
 
 CIBW_PLATFORM="linux"
 CIBW_ARCHS="x86_64"
-CIBW_BUILD="cp310-manylinux*"
+CIBW_BUILD="$BUILD_FOR_PYTHON-manylinux*"
 CIBW_MANYLINUX_IMAGE="manylinux_2_28"
 
 BUILD_VERBOSITY="${BUILD_VERBOSITY:-0}"
@@ -52,8 +53,8 @@ if [ "$BUILD_PLATFORM" = "linux" ]; then
 elif [ "$BUILD_PLATFORM" = "darwin" ]; then
     CIBW_PLATFORM="macos"
     CIBW_ARCHS="arm64"
-    CIBW_BUILD="cp310-*"
-    CIBW_MANYLINUX_IMAGE="" 
+    CIBW_BUILD="$BUILD_FOR_PYTHON-*"
+    CIBW_MANYLINUX_IMAGE=""
     MACOSX_DEPLOYMENT_ARGS="MACOSX_DEPLOYMENT_TARGET=14.0" # supports macos14+
 else
     echo "Error: Unknown BUILD_PLATFORM '$BUILD_PLATFORM'. Must be 'linux' or 'darwin'."

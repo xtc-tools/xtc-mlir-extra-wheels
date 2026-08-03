@@ -18,10 +18,7 @@ class BinaryDistribution(Distribution):
 
 
 class CBdistWheel(bdist_wheel):
-    def get_tag(self):
-        python, abi, plat = super().get_tag()
-        # Force python and abi to generic python3
-        return "py3", "none", plat
+    pass
 
 
 if __name__ == "__main__":
