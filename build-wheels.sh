@@ -9,9 +9,23 @@ BUILD_PLATFORM="${BUILD_PLATFORM:-$(uname -s | tr '[:upper:]' '[:lower:]')}"
 BUILD_PACKAGE="${BUILD_PACKAGE:-mlir-extra-tools}"
 BUILD_FOR_PYTHON="${BUILD_FOR_PYTHON:-cp310}"
 
+BUILD_ARCH="${BUILD_ARCH:-$(uname -m)}"
+case "$BUILD_ARCH" in
+    x86_64|amd64)
+        CIBW_ARCHS="x86_64"
+        CIBW_MANYLINUX_ENV_NAME="CIBW_MANYLINUX_X86_64_IMAGE"
+        ;;
+    aarch64|arm64)
+        CIBW_ARCHS="aarch64"
+        CIBW_MANYLINUX_ENV_NAME="CIBW_MANYLINUX_AARCH64_IMAGE"
+        ;;
+    *)
+        echo "Error: Unsupported architecture '$BUILD_ARCH'. Must be 'x86_64' or 'aarch64'."
+        exit 1
+        ;;
+esac
 
 CIBW_PLATFORM="linux"
-CIBW_ARCHS="x86_64"
 CIBW_BUILD="$BUILD_FOR_PYTHON-manylinux*"
 CIBW_MANYLINUX_IMAGE="manylinux_2_28"
 
@@ -31,7 +45,7 @@ CIBW_REPAIR_WHEEL_COMMAND_LINUX="auditwheel repair --exclude 'libLLVM.so' --excl
 CIBW_REPAIR_WHEEL_COMMAND_MACOS="pip install wheel && python mac-os-wheels-fixer.py --original {wheel} --output {dest_dir}"
 if [ "$BUILD_PACKAGE" = "mlir-extra-dev" ]; then
     # No binary to repair, trick wheel name for right platform version anyway
-    CIBW_REPAIR_WHEEL_COMMAND_LINUX='cp {wheel} {dest_dir}/`basename {wheel} -linux_x86_64.whl`-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl'
+    CIBW_REPAIR_WHEEL_COMMAND_LINUX='cp {wheel} {dest_dir}/`basename {wheel} -linux_'"$CIBW_ARCHS"'.whl`-manylinux_2_24_'"$CIBW_ARCHS"'.manylinux_2_28_'"$CIBW_ARCHS"'.whl'
     CIBW_REPAIR_WHEEL_COMMAND_MACOS='cp {wheel} {dest_dir}/'
 fi
 
@@ -66,7 +80,7 @@ ENV_VARS=(
     CIBW_ARCHS="$CIBW_ARCHS"
     CIBW_BUILD="$CIBW_BUILD"
     CIBW_PROJECT_REQUIRES_PYTHON=">=3.10"
-    CIBW_MANYLINUX_X86_64_IMAGE="$CIBW_MANYLINUX_IMAGE"
+    "$CIBW_MANYLINUX_ENV_NAME=$CIBW_MANYLINUX_IMAGE"
     CIBW_BEFORE_ALL="$CIBW_BEFORE_ALL"
     CIBW_BEFORE_BUILD="$CIBW_BEFORE_BUILD"
     CIBW_REPAIR_WHEEL_COMMAND_MACOS="$CIBW_REPAIR_WHEEL_COMMAND_MACOS"
