@@ -11,4 +11,5 @@ python3 -m pip install \
         "xtc-mlir-dev==$MLIR_VERSION" \
         "xtc-mlir-python-bindings==$MLIR_VERSION" \
         "nanobind==2.13.0" \
+        "lit==18.1.8" \
         --index-url "$INDEX_URL"
