@@ -11,6 +11,7 @@ INSTALL_DIR="${2-$dir/mlir-extra-tools/install}"
 INSTALL_DEV_DIR="${3-$dir/mlir-extra-dev/install}"
 
 BUILD_LLVM_CCACHE="${BUILD_LLVM_CCACHE:-1}"
+BUILD_RUN_TESTS="${BUILD_RUN_TESTS:-1}"
 CCACHE_OPTS=""
 [ "$BUILD_LLVM_CCACHE" != 1 ] || CCACHE_OPTS="-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
 
@@ -19,6 +20,7 @@ LLVM_BUILD_TYPE=Release
 PYTHON_EXECUTABLE=$(python -c 'import sys; print(sys.executable)')
 MLIR_PREFIX=$(python -c 'import mlir; print(mlir.__path__[0])')
 LLVM_PREFIX=$(python -c 'import llvm; print(llvm.__path__[0])')
+LIT_PATH=$(command -v lit)
 
 rm -rf "$BUILD_DIR" "$INSTALL_DIR" "$INSTALL_DEV_DIR"
 mkdir -p "$BUILD_DIR"
@@ -35,7 +37,8 @@ cmake \
     -DLLVM_ENABLE_ASSERTIONS=ON \
     -DLLVM_ENABLE_WARNINGS=OFF \
     -DLLVM_PARALLEL_LINK_JOBS=1 \
-    -DXTC_MLIR_INCLUDE_TESTS=OFF \
+    -DXTC_MLIR_INCLUDE_TESTS=ON \
+    -DLLVM_EXTERNAL_LIT="$LIT_PATH" \
     $CCACHE_OPTS \
     -Wno-dev \
     -Wno-deprecated \
@@ -43,6 +46,7 @@ cmake \
     ..
 
 ninja
+[ "$BUILD_RUN_TESTS" != 1 ] || LIT_OPTS=--show-pass ninja check-xtc
 ninja install
 
 mkdir -p "$INSTALL_DEV_DIR"
