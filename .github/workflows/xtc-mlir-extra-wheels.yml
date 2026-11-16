@@ -23,12 +23,12 @@ jobs:
           - {os: ubuntu-24.04-arm, pkg: tools, python: cp313}
           - {os: ubuntu-24.04-arm, pkg: tools, python: cp314}
           - {os: ubuntu-24.04-arm, pkg: dev, python: cp310}
-          - {os: macos-14, pkg: tools, python: cp310}
-          - {os: macos-14, pkg: tools, python: cp311}
-          - {os: macos-14, pkg: tools, python: cp312}
-          - {os: macos-14, pkg: tools, python: cp313}
-          - {os: macos-14, pkg: tools, python: cp314}
-          - {os: macos-14, pkg: dev, python: cp310}
+          - {os: macos-15, pkg: tools, python: cp310}
+          - {os: macos-15, pkg: tools, python: cp311}
+          - {os: macos-15, pkg: tools, python: cp312}
+          - {os: macos-15, pkg: tools, python: cp313}
+          - {os: macos-15, pkg: tools, python: cp314}
+          - {os: macos-15, pkg: dev, python: cp310}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
